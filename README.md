@@ -12,6 +12,9 @@
 1. **Download the latest release**: Click the "Latest Release" badge above to navigate to the release page and download the latest version.
 2. **Insert into your Roblox workspace**: Place the downloaded file into your Rojo project directory, or copy its contents and import them as a ModuleScript in Roblox Studio.
 
+## Documentation
+View the docs markdown at [this link](https://github.com/GarandDev/rcord/blob/main/DOCS.md)
+
 ## Usage
 
 ### 1. Import rCord
@@ -27,12 +30,12 @@ local webhook = rCord.Webhook.new("https://discord.com/api/webhooks/.../...") --
 ### 3. Send a Generic Message
 ```lua
 webhook:send("Hello")
-webhook:send(rCord.Message.new():setContent("Hello"))
+webhook:send(webhook:createMessage():setContent("Hello"))
 ```
 
 ### 4. Send an Embed
 ```lua
-local message = rCord.Message.new()
+local message = webhook:createMessage()
 message:addEmbed(
    message:createEmbed():setTitle("Wow! Embed"):setDescription("Wow, this is real")
 )
