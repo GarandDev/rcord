@@ -5,7 +5,7 @@ The **rCord** documentation for the different classes
 ### Proxy
 #### generateUrl(url: string)
 ```lua
-Proxy:generateUrl("EXAMPLE URL")
+Proxy:generateUrl("[https://](https://webhook.proxything.com/api/webhooks/%s/%s)")
 ```
 **Description**: Generates a new URL using the specified conversion URL format.
 
@@ -71,6 +71,12 @@ message:setAvatarUrl("https://example.com/avatar.png")
 ```
 **Description**: Sets the avatar URL for the message.
 
+#### createEmbed()
+```lua
+message:createEmbed()
+```
+**Description**: Creates a new embed object for the message and returns it to you.
+
 #### addEmbed(embed: EmbedClass)
 ```lua
 message:addEmbed(embed)
@@ -82,17 +88,17 @@ message:addEmbed(embed)
 ```lua
 local message = webhook:createMessage()
 ```
-**Description**: Creates a new message object for the webhook.
+**Description**: Creates a new message object for the webhook and returns it to you.
 
 #### setProxy(proxy: string | ProxyClass)
 ```lua
 webhook:setProxy("newstargeted")
 ```
-**Description**: Sets a proxy for the webhook.
+**Description**: Sets a new proxy for the webhook.
 
 #### send(body: string | MessageClass)
 ```lua
 webhook:send("Simple message")
 ```
-**Description**: Sends a message or embed to the webhook URL.
+**Description**: Sends a message either in a string or a message class.
 ```
