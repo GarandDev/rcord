@@ -5,9 +5,9 @@ local Webhook = rCord.createWebhook('https://discord.com/api/webhooks/.../...')
 
 MarketplaceService.PromptGamePassPurchaseFinished:Connect(function(player, passId, wasPurchased)
     if wasPurchased then
-        local message = rCord.createMessage()
+        local message = Webhook:createMessage()
         message:addEmbed(
-            rCord.createEmbed()
+            Webhook:createEmbed()
                 :setTitle("Player bought gamepass")
                 :setDescription("Player **" .. player.Name .. "** bought gamepass **" .. tostring(passId) .. "**!")
         )
