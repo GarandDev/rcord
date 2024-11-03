@@ -62,6 +62,7 @@ export type MessageType = {
     avatar_url: string | nil,
     tts: boolean | nil,
     embeds: { EmbedClass | EmbedType } | nil,
+	thread_name: string | nil
 }
 
 export type EmbedClass = {
@@ -79,6 +80,7 @@ export type EmbedClass = {
     setProvider: (self: EmbedClass, body: EmbedProvider) -> EmbedClass,
     setAuthor: (self: EmbedClass, body: EmbedAuthor) -> EmbedClass,
     addField: (self: EmbedClass, body: EmbedField) -> EmbedClass,
+	getCharacters: (self: EmbedClass) -> number,
     data: EmbedClass
 }
 
@@ -97,7 +99,9 @@ export type MessageClass = {
     setUsername: (self: MessageClass, username: string) -> MessageClass,
     setAvatarUrl: (self: MessageClass, avatarUrl: string) -> MessageClass,
     setTTS: (self: MessageClass, tts: boolean) -> MessageClass,
+	setThreadName: (self: MessageClass, name: string) -> MessageClass,
     addEmbed: (self: MessageClass, embed: EmbedClass) -> MessageClass,
+	validateMessage: (self: MessageClass) -> (boolean, string | nil),
     data: MessageType,
 }
 
@@ -108,7 +112,7 @@ export type WebhookClass = {
 	createEmbed: (self: WebhookClass) -> EmbedClass,
 	createCustomProxy: (self: WebhookClass, conversionUrl: string) -> ProxyClass,
     setProxy: (self: WebhookClass, proxy: string | ProxyClass) -> nil,
-    send: (self: WebhookClass, body: string | Message) -> (boolean, string),
+    send: (self: WebhookClass, body: string | Message, wait: boolean | nil, thread_id: number | nil) -> (boolean, string),
     url: string,
     proxy: WebhookClass,
 }
@@ -209,6 +213,19 @@ do
 		table.insert(self.data.fields, body)
 		return self
 	end
+	function Embed:getCharacters()
+		local characters = 0
+
+		for _,v in pairs({self.data.title, self.data.description, self.data.footer.text, self.data.author.name}) do
+			characters += string.len(v or "")
+		end
+
+		for _,v in pairs(self.data.fields or {}) do
+			characters += (string.len(v.name) + string.len(v.value))
+		end
+
+		return characters
+	end
 end
 
 local Message
@@ -255,6 +272,10 @@ do
 		self.data.tts = tts
 		return self
 	end
+	function Message:setThreadName(name)
+		self.data.thread_name = name
+		return self
+	end
 	function Message:addEmbed(embed)
 		if not self.data.embeds then
 			self.data.embeds = { embed }
@@ -262,6 +283,32 @@ do
 			table.insert(self.data.embeds, embed)
 		end
 		return self
+	end
+	function Message:validateMessage()
+		local content = self.data.content
+		local embeds = self.data.embeds
+		if (not content or content == "") and (not embeds or #embeds == 0) then
+			return false, "no content and no embeds"
+		end
+
+		if content and string.len(content) > 2000 then
+			return false, "over 2000 characters"
+		end
+
+		if #embeds > 10 then
+			return false, "over 10 embeds"
+		end
+
+		local total = 0
+		for _, v in pairs(self.data.embeds or {}) do
+			total += v:getCharacters()
+		end
+
+		if total > 6000 then
+			return false, "embeds characters are over 6000"
+		end
+
+		return true
 	end
 end
 
@@ -297,14 +344,19 @@ do
 	function Webhook:createCustomProxy(conversionUrl: string): ProxyClass
 		return Proxy.new(conversionUrl)
 	end
-	function Webhook:send(body)
+	function Webhook:send(body, wait, thread_id)
+		wait = wait or false
 		if typeof(body) == "string" then
 			local content = body
 			body = Message.new():setContent(content)
 		end
+
+		local valid, err = body:validateMessage() -- validate message before hitting proxy
+		assert(valid, err)
+
 		local success, response = pcall(function()
 			return HttpService:PostAsync(
-				self.proxy:generateUrl(self.url),
+				string.format("%s?wait=%s%s", self.proxy:generateUrl(self.url), tostring(wait), thread_id and "&thread_id=" ..thread_id or ""),
 				HttpService:JSONEncode(body:toJSON()),
 				Enum.HttpContentType.ApplicationJson,
 				false

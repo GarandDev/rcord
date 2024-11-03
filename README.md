@@ -7,6 +7,11 @@
 [![Issues](https://img.shields.io/github/issues/GarandDev/rcord)](https://github.com/GarandDev/rcord/issues)
 [![Pull Requests](https://img.shields.io/github/issues-pr/GarandDev/rcord)](https://github.com/GarandDev/rcord/pulls)
 
+## Features
+* **Validator**: rCord includes a built-in validator that helps you catch errors in your messages before they reach the proxy.
+* **Compact**: rCord is designed to be small and efficient, aiding in better organization of your workflow.
+* **Types**: Enjoy comprehensive type checking in rCord, with every class and function available for autocompletion in your IDE.
+
 ## Installation
 
 1. **Download the latest release**: Click the "Latest Release" badge above to navigate to the release page and download the latest version.
