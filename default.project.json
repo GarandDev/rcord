@@ -6,9 +6,6 @@
     "ServerScriptService": {
       "rCord": {
         "$path": "src"        
-      },
-      "examples": {
-        "$path": "examples"        
       }
     }
   }
