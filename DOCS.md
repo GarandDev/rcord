@@ -30,9 +30,10 @@ webhook:createCustomProxy("https://webhook.proxything.com/api/webhooks/%s/%s")
 ```lua
 -- Sets the proxy for the webhook. Can accept either a string key of a proxy or a ProxyClass instance.
 webhook:setProxy("newstargeted")
+webhook:setProxy(webhook:createCustomProxy("https://webhook.proxything.com/api/webhooks/%s/%s") )
 ```
 
-### send(body: string | MessageClass): (boolean, string)
+### send(body: string | MessageClass, wait: boolean?, thread_id: string?): (boolean, string)
 ```lua
 -- Sends a message, can either be a string key or a MessageClass.
 local success, response = webhook:send("Hello, world!")
@@ -73,7 +74,7 @@ message:addEmbed(embed)
 
 ### toJSON(): MessageType
 ```lua
--- Converts the message object to a JSON-encoded table for sending.
+-- Converts the message object to a JSON-encoded table for sending. Only for behind-the-scenes use
 local json = message:toJSON()
 ```
 
