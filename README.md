@@ -47,5 +47,8 @@ message:addEmbed(
 webhook:send(message)
 ```
 
+## My proxy
+The proxy is currently unstable, so i will see how it goes and if it doesn't perform well i will shut it down. Luckly if this happens, it should divert all traffic to other proxies like the `newstargeted` or the `lewisakura` proxies.
+
 ## Examples
 For additional usage examples, refer to the `examples` folder.
