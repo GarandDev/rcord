@@ -1,10 +1,13 @@
 local HttpService = game:GetService("HttpService")
 
-local DEFAULT_PROXY = "newstargeted"
 local DEBUG = false
+
+local DEFAULT_PROXY = "garand" -- the proxy it will use
+local USE_GARAND_PROXY = "https://api.rbxgarand.xyz/useThisProxy" -- if you have chosen garand proxy it will check here if it is alive
 local PROXIES = {
 	newstargeted = "https://webhook.newstargeted.com/api/webhooks/%s/%s",
 	lewisakura = "https://webhook.lewisakura.moe/api/webhooks/%s/%s",
+	garand = "https://api.rbxgarand.xyz/api/webhooks/%s/%s",
 }
 
 export type EmbedFooter = {
@@ -113,7 +116,7 @@ export type WebhookClass = {
 	createEmbed: (self: WebhookClass) -> EmbedClass,
 	createCustomProxy: (self: WebhookClass, conversionUrl: string) -> ProxyClass,
     setProxy: (self: WebhookClass, proxy: string | ProxyClass) -> nil,
-    send: (self: WebhookClass, body: string | Message, wait: boolean?, thread_id: number?) -> (boolean, string),
+    send: (self: WebhookClass, body: string | Message, wait: boolean?, thread_id: string?) -> (boolean, string),
     url: string,
     proxy: WebhookClass,
 }
@@ -138,6 +141,17 @@ do
 		local id = parts[#parts - 1]
 		local token = parts[#parts]
 		return string.format(self.conversionUrl, id, token)
+	end
+	function Proxy:isGarandProxyAlive()
+		if DEFAULT_PROXY ~= "garand" then
+			return
+		end
+
+		local success, response = pcall(function()
+			return HttpService:JSONDecode(HttpService:GetAsync(USE_GARAND_PROXY))
+		end)
+
+		return success and (response or {})["useThisProxy"] or false
 	end
 end
 
@@ -296,7 +310,7 @@ do
 			return false, "over 2000 characters"
 		end
 
-		if #embeds > 10 then
+		if #(embeds or {}) > 10 then
 			return false, "over 10 embeds"
 		end
 
@@ -313,6 +327,9 @@ do
 	end
 end
 
+local HAS_CHECKED_LIFE_OF_GARAND_PROXY = false
+local IS_GARAND_PROXY_ALIVE = true
+
 local Webhook
 do
 	Webhook = setmetatable({}, {
@@ -327,13 +344,23 @@ do
 	end
 	function Webhook:constructor(url)
 		self.url = url
-		self.proxy = PROXIES[DEFAULT_PROXY]
+		self:setProxy(DEFAULT_PROXY)
 	end
 	function Webhook:setProxy(proxy)
 		if typeof(proxy) ~= "string" then
 			self.proxy = proxy
 		else
 			self.proxy = PROXIES[proxy]
+		end
+
+		if proxy == "garand" and not HAS_CHECKED_LIFE_OF_GARAND_PROXY then
+			IS_GARAND_PROXY_ALIVE = self.proxy:isGarandProxyAlive()
+			HAS_CHECKED_LIFE_OF_GARAND_PROXY = true
+		end
+
+		if not IS_GARAND_PROXY_ALIVE then
+			print("[IMPORTANT] You chose 'garand' proxy, but it is offline or out of service. Automatically choosing 'newstargeted' proxy")
+			self.proxy = PROXIES["newstargeted"]
 		end
 	end
 	function Webhook:createMessage(): MessageClass
@@ -353,7 +380,9 @@ do
 		end
 
 		local valid, err = body:validateMessage() -- validate message before hitting proxy
-		assert(valid, err)
+		if not valid then
+			return false, err
+		end
 
 		if DEBUG then
 			print("Sending webhook with data ", body:toJSON())
