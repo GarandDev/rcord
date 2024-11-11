@@ -1,9 +1,9 @@
 [package]
 name = "garanddev/rcord"
 description = "Read more at https://github.com/GarandDev/rcord"
-version = "1.1.1"
+version = "1.0.0" # Will automaticly update via git actions
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "server"
-exclude = ["sourcemap.json", "TODO", "aftman.toml", "ts", "examples"]
+exclude = [".git", ".github", "examples", "ts", ".gitignore", "aftman.toml", "DOCS.md", "README.md", "sourcemap.json", "TODO", "VERSION"]
 
 [dependencies]

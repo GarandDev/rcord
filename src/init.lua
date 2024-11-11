@@ -1,108 +1,116 @@
 -- Made by GarandDev via https://github.com/GarandDev/rcord
+-- Contributors: kaan650
 
 local HttpService = game:GetService("HttpService")
 
-local DEBUG = false
+local DEBUG = true
+
+export type ResponseData = {
+	success: boolean,
+	statusCode: number,
+	statusMessage: string,
+	body: string?
+}
 
 export type EmbedFooter = {
-    text: string,
-    icon_url: string?,
-    proxy_icon_url: string?,
+	text: string,
+	icon_url: string?,
+	proxy_icon_url: string?,
 }
 
 export type EmbedField = {
-    name: string,
-    value: string,
-    inline: boolean?,
+	name: string,
+	value: string,
+	inline: boolean?,
 }
 
 export type EmbedImage = {
-    url: string,
-    height: number?,
-    width: number?,
+	url: string,
+	height: number?,
+	width: number?,
 }
 
 export type EmbedThumbnail = {
-    url: string,
-    height: number?,
-    width: number?,
+	url: string,
+	height: number?,
+	width: number?,
 }
 
 export type EmbedProvider = {
-    name: string,
-    url: string?,
+	name: string,
+	url: string?,
 }
 
 export type EmbedAuthor = {
-    name: string,
-    url: string?,
-    icon_url: string?,
+	name: string,
+	url: string?,
+	icon_url: string?,
 }
 
 export type EmbedType = {
-    title: string?,
-    type: string?,
-    description: string?,
-    url: string?,
-    timestamp: string?,
-    color: number?,
-    footer: EmbedFooter?,
-    image: EmbedImage?,
-    thumbnail: EmbedThumbnail?,
-    provider: EmbedProvider?,
-    author: EmbedAuthor?,
-    fields: {EmbedField}?,
+	title: string?,
+	type: string?,
+	description: string?,
+	url: string?,
+	timestamp: string?,
+	color: number?,
+	footer: EmbedFooter?,
+	image: EmbedImage?,
+	thumbnail: EmbedThumbnail?,
+	provider: EmbedProvider?,
+	author: EmbedAuthor?,
+	fields: {EmbedField}?,
 }
 
 export type MessageType = {
-    content: string?,
-    username: string?,
-    avatar_url: string?,
-    tts: boolean?,
-    embeds: { EmbedClass | EmbedType }?,
+	content: string?,
+	username: string?,
+	avatar_url: string?,
+	tts: boolean?,
+	embeds: { EmbedClass | EmbedType }?,
 	thread_name: string?
 }
 
 export type EmbedClass = {
-    new: () -> EmbedClass,
-    constructor: (self: EmbedClass) -> nil,
-    setTitle: (self: EmbedClass, title: string) -> EmbedClass,
-    setType: (self: EmbedClass, body: "rich" | "image" | "video" | "gifv" | "article" | "link") -> EmbedClass,
-    setDescription: (self: EmbedClass, description: string) -> EmbedClass,
-    setUrl: (self: EmbedClass, url: string) -> EmbedClass,
-    setTimestamp: (self: EmbedClass, timestamp: string) -> EmbedClass,
-    setColor: (self: EmbedClass, color: number | Color3) -> EmbedClass,
-    setFooter: (self: EmbedClass, body: EmbedFooter) -> EmbedClass,
-    setImage: (self: EmbedClass, body: EmbedImage) -> EmbedClass,
-    setThumbnail: (self: EmbedClass, body: EmbedThumbnail) -> EmbedClass,
-    setProvider: (self: EmbedClass, body: EmbedProvider) -> EmbedClass,
-    setAuthor: (self: EmbedClass, body: EmbedAuthor) -> EmbedClass,
-    addField: (self: EmbedClass, body: EmbedField) -> EmbedClass,
+	new: () -> EmbedClass,
+	constructor: (self: EmbedClass) -> nil,
+	setTitle: (self: EmbedClass, title: string) -> EmbedClass,
+	setType: (self: EmbedClass, body: "rich" | "image" | "video" | "gifv" | "article" | "link") -> EmbedClass,
+	setDescription: (self: EmbedClass, description: string) -> EmbedClass,
+	setUrl: (self: EmbedClass, url: string) -> EmbedClass,
+	setTimestamp: (self: EmbedClass, timestamp: string) -> EmbedClass,
+	setColor: (self: EmbedClass, color: number | Color3) -> EmbedClass,
+	setFooter: (self: EmbedClass, body: EmbedFooter) -> EmbedClass,
+	setImage: (self: EmbedClass, body: EmbedImage) -> EmbedClass,
+	setThumbnail: (self: EmbedClass, body: EmbedThumbnail) -> EmbedClass,
+	setProvider: (self: EmbedClass, body: EmbedProvider) -> EmbedClass,
+	setAuthor: (self: EmbedClass, body: EmbedAuthor) -> EmbedClass,
+	addField: (self: EmbedClass, body: EmbedField) -> EmbedClass,
 	getCharacters: (self: EmbedClass) -> number,
-    data: EmbedClass
+	data: EmbedClass
 }
 
 export type MessageClass = {
-    new: () -> MessageClass,
-    constructor: (self: MessageClass) -> nil,
-    toJSON: (self: MessageClass) -> MessageType,
-    setContent: (self: MessageClass, content: string) -> MessageClass,
-    setUsername: (self: MessageClass, username: string) -> MessageClass,
-    setAvatarUrl: (self: MessageClass, avatarUrl: string) -> MessageClass,
-    setTTS: (self: MessageClass, tts: boolean) -> MessageClass,
+	new: () -> MessageClass,
+	constructor: (self: MessageClass) -> nil,
+	toJSON: (self: MessageClass) -> MessageType,
+	setContent: (self: MessageClass, content: string) -> MessageClass,
+	setUsername: (self: MessageClass, username: string) -> MessageClass,
+	setAvatarUrl: (self: MessageClass, avatarUrl: string) -> MessageClass,
+	setTTS: (self: MessageClass, tts: boolean) -> MessageClass,
 	setThreadName: (self: MessageClass, name: string) -> MessageClass,
-    addEmbed: (self: MessageClass, embed: EmbedClass) -> MessageClass,
+	addEmbed: (self: MessageClass, embed: EmbedClass) -> MessageClass,
 	validateMessage: (self: MessageClass) -> (boolean, string?),
-    data: MessageType,
+	data: MessageType,
 }
 
 export type WebhookClass = {
-    new: (url: string) -> WebhookClass,
-    constructor: (self: WebhookClass, url: string) -> nil,
+	new: (url: string | Secret) -> WebhookClass,
+	constructor: (self: WebhookClass, url: string) -> nil,
 	createMessage: (self: WebhookClass) -> MessageClass,
 	createEmbed: (self: WebhookClass) -> EmbedClass,
-    send: (self: WebhookClass, body: string | Message, wait: boolean?, thread_id: string?) -> (boolean, string),
-    url: string,
+	send: (self: WebhookClass, body: string | Message, wait: boolean?, thread_id: string?) -> (boolean, ResponseData),
+	url: string | Secret,
 }
 
 local Embed
@@ -294,6 +302,14 @@ do
 	function Webhook:createEmbed(): EmbedClass
 		return Embed.new()
 	end
+	function Webhook:convertToUrl(thread_id, wait)
+		local addon = `?wait={tostring(wait)}{thread_id and `&thread_id={thread_id}` or ""}`
+		if typeof(self.url) ~= "Secret" then
+			return self.url .. addon
+		end
+
+		return self.url:AddSuffix(addon)
+	end
 	function Webhook:send(body, wait, thread_id)
 		wait = wait or false
 		if typeof(body) == "string" then
@@ -305,31 +321,40 @@ do
 		if not valid then
 			return false, err
 		end
+	
+		local url = self:convertToUrl(thread_id, wait)
+		local jsonBody = body:toJSON()
 
 		if DEBUG then
-			print("Sending webhook with data ", body:toJSON())
-			print("Sending using URL ",string.format("%s?wait=%s%s", self.url, tostring(wait), thread_id and "&thread_id=" ..thread_id or ""))
+			print(`[rCord]: Sending webhook with data `, jsonBody)
+			print(`[rCord]: Sending using URL {url}`)
 		end
 
-		local success, response = pcall(function()
-			return HttpService:PostAsync(
-				string.format("%s?wait=%s%s", self.url, tostring(wait), thread_id and "&thread_id=" ..thread_id or ""),
-				HttpService:JSONEncode(body:toJSON()),
-				Enum.HttpContentType.ApplicationJson,
-				false
-			)
-		end)
-
-		return success, response
+		local success, data = pcall(HttpService.RequestAsync, HttpService, {
+			Url = url,
+			Method = "POST",
+			Headers = {
+				["Content-Type"] = "application/json",
+			},
+			Body = HttpService:JSONEncode(jsonBody),
+			Compress = Enum.HttpCompression.None
+		})
+		
+		return success, {
+			success = data.Success,
+			statusCode = data.StatusCode,
+			statusMessage = data.StatusMessage,
+			body = data.Body
+		} :: ResponseData
 	end
 end
 
 return {
-	createWebhook = function(url: string): WebhookClass
+	createWebhook = function(url: string | Secret): WebhookClass
 		return Webhook.new(url)
 	end,
 
-    Embed = Embed :: EmbedClass,
-    Webhook = Webhook :: WebhookClass,
-    Message = Message :: MessageClass,
+	Embed = Embed :: EmbedClass,
+	Webhook = Webhook :: WebhookClass,
+	Message = Message :: MessageClass,
 }
