@@ -1,3 +1,5 @@
+-- Made by GarandDev via https://github.com/GarandDev/rcord
+
 local HttpService = game:GetService("HttpService")
 
 local DEBUG = false
