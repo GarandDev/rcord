@@ -1,6 +1,6 @@
 # rCord
 
-**rCord** is a small compact Discord webhook wrapper for Roblox, offering easy setup, complete type support, practical examples, and built-in proxy support.
+**rCord** is a small compact Discord webhook wrapper for [Roblox](https://devforum.roblox.com/t/rcord-v101-a-discord-webhook-api-wrapper-for-roblox/3253045), offering easy setup, complete type support, practical examples, and built-in proxy support.
 
 [![Latest Release](https://img.shields.io/github/v/release/GarandDev/rcord)](https://github.com/GarandDev/rcord/releases/latest)
 [![Contributors](https://img.shields.io/github/contributors/GarandDev/rcord)](https://github.com/GarandDev/rcord/graphs/contributors)
@@ -46,6 +46,9 @@ message:addEmbed(
 )
 webhook:send(message)
 ```
+
+## My proxy
+The proxy is currently unstable, so i will see how it goes and if it doesn't perform well i will shut it down. Luckly if this happens, it should divert all traffic to other proxies like the `newstargeted` or the `lewisakura` proxies.
 
 ## Examples
 For additional usage examples, refer to the `examples` folder.
