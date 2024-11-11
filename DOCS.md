@@ -20,19 +20,6 @@ webhook:createMessage()
 webhook:createEmbed() 
 ```
 
-### createCustomProxy(conversionUrl: string): ProxyClass
-```lua
--- Creates a proxy object and returns it to you.
-webhook:createCustomProxy("https://webhook.proxything.com/api/webhooks/%s/%s") 
-```
-
-### setProxy(proxy: string | ProxyClass): nil
-```lua
--- Sets the proxy for the webhook. Can accept either a string key of a proxy or a ProxyClass instance.
-webhook:setProxy("newstargeted")
-webhook:setProxy(webhook:createCustomProxy("https://webhook.proxything.com/api/webhooks/%s/%s") )
-```
-
 ### send(body: string | MessageClass, wait: boolean?, thread_id: string?): (boolean, string)
 ```lua
 -- Sends a message, can either be a string key or a MessageClass.
@@ -151,13 +138,4 @@ embed:setAuthor({name = "Author Name", url = "https://example.com", icon_url = "
 ```lua
 -- Adds a field to the embed.
 embed:addField({name = "Field Name", value = "Field Value", inline = true})
-```
-
----
-
-## Proxy
-### generateUrl(url: string): string
-```lua
--- Generates a new URL using the specified conversion URL format.
-Proxy:generateUrl("https://discord.com/api/webhooks/.../...")
 ```
