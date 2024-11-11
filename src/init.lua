@@ -97,7 +97,6 @@ export type MessageClass = {
     setUsername: (self: MessageClass, username: string) -> MessageClass,
     setAvatarUrl: (self: MessageClass, avatarUrl: string) -> MessageClass,
     setTTS: (self: MessageClass, tts: boolean) -> MessageClass,
-    createEmbed: (self: MessageClass) -> EmbedClass,
     addEmbed: (self: MessageClass, embed: EmbedClass) -> MessageClass,
     data: MessageType,
 }
@@ -105,7 +104,6 @@ export type MessageClass = {
 export type WebhookClass = {
     new: (url: string) -> WebhookClass,
     constructor: (self: WebhookClass, url: string) -> nil,
-    createMessage: (self: WebhookClass) -> Message,
     setProxy: (self: WebhookClass, proxy: string | ProxyClass) -> nil,
     send: (self: WebhookClass, body: string | Message) -> (boolean, string),
     url: string,
@@ -254,9 +252,6 @@ do
 		self.data.tts = tts
 		return self
 	end
-	function Message:createEmbed()
-		return Embed.new()
-	end
 	function Message:addEmbed(embed)
 		if not self.data.embeds then
 			self.data.embeds = { embed }
@@ -283,9 +278,6 @@ do
 		self.url = url
 		self.proxy = PROXIES[DEFAULT_PROXY]
 	end
-	function Webhook:createMessage()
-		return Message.new()
-	end
 	function Webhook:setProxy(proxy)
 		if typeof(proxy) ~= "string" then
 			self.proxy = proxy
@@ -311,9 +303,21 @@ do
 end
 
 return {
+	createWebhook = function(url: string): WebhookClass
+		return Webhook.new(url)
+	end,
+	createMessage = function(): MessageClass
+		return Message.new()
+	end,
+	createEmbed = function(): EmbedClass
+		return Embed.new()
+	end,
+	createCustomProxy = function(conversionUrl: string): ProxyClass
+		return Proxy.new(conversionUrl)
+	end,
+
     Embed = Embed :: EmbedClass,
     Webhook = Webhook :: WebhookClass,
     Message = Message :: MessageClass,
 	Proxy = Proxy :: ProxyClass,
-    Proxies = PROXIES
 }
