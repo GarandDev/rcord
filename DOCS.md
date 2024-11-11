@@ -28,10 +28,10 @@ local success, response = webhook:send("Hello, world!")
 
 ## ResponseData
 ```lua
-	success: boolean,
-	statusCode: number,
-	statusMessage: string,
-	body: string?
+success: boolean,
+statusCode: number,
+statusMessage: string,
+body: string?
 ```
 
 ---
