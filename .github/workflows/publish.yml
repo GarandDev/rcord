@@ -1,4 +1,4 @@
-name: Publish to Wally and Update Roblox Module Script
+name: Publish to Wally
 
 on:
   workflow_dispatch:  # Allows manual triggering from GitHub
@@ -32,16 +32,3 @@ jobs:
 
     - name: Wally logout
       run: wally logout
-
-    - name: Update Roblox Module Script
-      run: |
-        curl --location --request PATCH 'https://apis.roblox.com/assets/v1/assets/${{ secrets.ASSET_ID }}' \
-          --header 'x-api-key: ${{ secrets.ROBLOX_API_KEY }}' \
-          --form 'request={
-            "assetId": "${{ secrets.ASSET_ID }}",
-            "name": "rCord"
-          }' \
-          --form 'fileContent=@src/init.lua;type=model/fbx;filename=rCord.lua'
-      env:
-        ROBLOX_API_KEY: ${{ secrets.ROBLOX_API_KEY }}
-        ASSET_ID: ${{ secrets.ASSET_ID }}
