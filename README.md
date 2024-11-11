@@ -13,7 +13,7 @@
 2. **Insert into your Roblox workspace**: Place the downloaded file into your Rojo project directory, or copy its contents and import them as a ModuleScript in Roblox Studio.
 
 ## Documentation
-View the docs markdown at [this link](https://github.com/GarandDev/rcord/blob/main/DOCS.md)
+View the docs markdown at [this link](https://github.com/GarandDev/rcord/blob/main/DOCS.md) (may have few mistakes as most of it was automated)
 
 ## Usage
 
