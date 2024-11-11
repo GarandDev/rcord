@@ -1,28 +1,29 @@
 # rCord Documentation
 
 The **rCord** documentation for the different classes
-
-### Proxy
-#### generateUrl(url: string)
+## Proxy
+### generateUrl(url: string)
 ```lua
-Proxy:generateUrl("[https://](https://webhook.proxything.com/api/webhooks/%s/%s)")
+Proxy:generateUrl("https://webhook.proxything.com/api/webhooks/%s/%s")
 ```
 **Description**: Generates a new URL using the specified conversion URL format.
 
-### Embed
-#### setTitle(title: string)
+---
+
+## Embed
+### setTitle(title: string)
 ```lua
 embed:setTitle("My Embed Title")
 ```
 **Description**: Sets the title of the embed.
 
-#### setType(type: string)
+### setType(type: string)
 ```lua
 embed:setType("rich")
 ```
 **Description**: Sets the type of the embed.
 
-#### setDescription(description: string)
+### setDescription(description: string)
 ```lua
 embed:setDescription("This is an example description.")
 ```
@@ -82,6 +83,8 @@ embed:addField({name = "Field Name", value = "Field Value", inline = true})
 ```
 **Description**: Adds a field to the embed.
 
+---
+
 ## Message
 ### setContent(content: string)
 ```lua
@@ -125,22 +128,29 @@ local json = message:toJSON()
 ```
 **Description**: Converts the message object to a JSON-encoded table for sending.
 
-### Webhook
-#### createMessage()
-```lua
-local message = webhook:createMessage()
-```
-**Description**: Creates a new message object for the webhook and returns it to you.
+---
 
-#### setProxy(proxy: string | ProxyClass)
+## Webhook
+### createMessage()
+```lua
+local newMessage = webhook:createMessage()
+```
+**Description**: Creates a new message object for the webhook.
+
+### setProxy(proxy: string | ProxyClass)
 ```lua
 webhook:setProxy("newstargeted")
 ```
-**Description**: Sets a new proxy for the webhook.
+**Description**: Sets the proxy for the webhook. Can accept either a string key of a proxy or a `ProxyClass` instance.
+
+### send(body: string | MessageClass)
+```lua
+local success, response = webhook:send("Hello, world!")
+```
+**Description**: Sends a message or a string as the body of the webhook.
 
 #### send(body: string | MessageClass)
 ```lua
 webhook:send("Simple message")
 ```
 **Description**: Sends a message either in a string or a message class.
-```
