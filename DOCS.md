@@ -1,12 +1,85 @@
 # rCord Documentation
 
 The **rCord** documentation for the different classes
-## Proxy
-### generateUrl(url: string)
+
+## rCord
+### createWebhook
 ```lua
-Proxy:generateUrl("https://webhook.proxything.com/api/webhooks/%s/%s")
+rCord:createWebhook()
 ```
-**Description**: Generates a new URL using the specified conversion URL format.
+**Description**: Creates a webhook object and returns it to you.
+
+---
+
+## Webhook
+### createMessage
+```lua
+webhook:createMessage()
+```
+**Description**: Creates a message object and returns it to you.
+
+### createEmbed
+```lua
+webhook:createEmbed()
+```
+**Description**: Creates a embed object and returns it to you.
+
+### createCustomProxy
+```lua
+webhook:createCustomProxy()
+```
+**Description**: Creates a proxy object and returns it to you.
+
+### setProxy(proxy: string | ProxyClass)
+```lua
+webhook:setProxy("newstargeted")
+```
+**Description**: Sets the proxy for the webhook. Can accept either a string key of a proxy or a `ProxyClass` instance.
+
+### send(body: string | MessageClass)
+```lua
+local success, response = webhook:send("Hello, world!")
+```
+**Description**: Sends a message or a string as the body of the webhook.
+
+---
+
+## Message
+### setContent(content: string)
+```lua
+message:setContent("Hello, this is a message.")
+```
+**Description**: Sets the content of the message.
+
+### setUsername(username: string)
+```lua
+message:setUsername("Example User")
+```
+**Description**: Sets the username for the message.
+
+### setAvatarUrl(avatarUrl: string)
+```lua
+message:setAvatarUrl("https://example.com/avatar.png")
+```
+**Description**: Sets the avatar URL for the message.
+
+### setTTS(tts: boolean)
+```lua
+message:setTTS(true)
+```
+**Description**: Enables or disables text-to-speech for the message.
+
+### addEmbed(embed: EmbedClass)
+```lua
+message:addEmbed(embed)
+```
+**Description**: Adds an embed to the message.
+
+### toJSON()
+```lua
+local json = message:toJSON()
+```
+**Description**: Converts the message object to a JSON-encoded table for sending.
 
 ---
 
@@ -85,66 +158,9 @@ embed:addField({name = "Field Name", value = "Field Value", inline = true})
 
 ---
 
-## Message
-### setContent(content: string)
+## Proxy
+### generateUrl(url: string)
 ```lua
-message:setContent("Hello, this is a message.")
+Proxy:generateUrl("https://webhook.proxything.com/api/webhooks/%s/%s")
 ```
-**Description**: Sets the content of the message.
-
-### setUsername(username: string)
-```lua
-message:setUsername("Example User")
-```
-**Description**: Sets the username for the message.
-
-### setAvatarUrl(avatarUrl: string)
-```lua
-message:setAvatarUrl("https://example.com/avatar.png")
-```
-**Description**: Sets the avatar URL for the message.
-
-### setTTS(tts: boolean)
-```lua
-message:setTTS(true)
-```
-**Description**: Enables or disables text-to-speech for the message.
-
-### createEmbed()
-```lua
-local embed = message:createEmbed()
-```
-**Description**: Creates a new embed object to be added to the message.
-
-### addEmbed(embed: EmbedClass)
-```lua
-message:addEmbed(embed)
-```
-**Description**: Adds an embed to the message.
-
-### toJSON()
-```lua
-local json = message:toJSON()
-```
-**Description**: Converts the message object to a JSON-encoded table for sending.
-
----
-
-## Webhook
-### createMessage()
-```lua
-local newMessage = webhook:createMessage()
-```
-**Description**: Creates a new message object for the webhook.
-
-### setProxy(proxy: string | ProxyClass)
-```lua
-webhook:setProxy("newstargeted")
-```
-**Description**: Sets the proxy for the webhook. Can accept either a string key of a proxy or a `ProxyClass` instance.
-
-### send(body: string | MessageClass)
-```lua
-local success, response = webhook:send("Hello, world!")
-```
-**Description**: Sends a message or a string as the body of the webhook.
+**Description**: Generates a new URL using the specified conversion URL format.

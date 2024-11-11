@@ -104,6 +104,9 @@ export type MessageClass = {
 export type WebhookClass = {
     new: (url: string) -> WebhookClass,
     constructor: (self: WebhookClass, url: string) -> nil,
+	createMessage: (self: WebhookClass) -> MessageClass,
+	createEmbed: (self: WebhookClass) -> EmbedClass,
+	createCustomProxy: (self: WebhookClass, conversionUrl: string) -> ProxyClass,
     setProxy: (self: WebhookClass, proxy: string | ProxyClass) -> nil,
     send: (self: WebhookClass, body: string | Message) -> (boolean, string),
     url: string,
@@ -285,6 +288,15 @@ do
 			self.proxy = PROXIES[proxy]
 		end
 	end
+	function Webhook:createMessage(): MessageClass
+		return Message.new()
+	end
+	function Webhook:createEmbed(): EmbedClass
+		return Embed.new()
+	end
+	function Webhook:createCustomProxy(conversionUrl: string): ProxyClass
+		return Proxy.new(conversionUrl)
+	end
 	function Webhook:send(body)
 		if typeof(body) == "string" then
 			local content = body
@@ -305,15 +317,6 @@ end
 return {
 	createWebhook = function(url: string): WebhookClass
 		return Webhook.new(url)
-	end,
-	createMessage = function(): MessageClass
-		return Message.new()
-	end,
-	createEmbed = function(): EmbedClass
-		return Embed.new()
-	end,
-	createCustomProxy = function(conversionUrl: string): ProxyClass
-		return Proxy.new(conversionUrl)
 	end,
 
     Embed = Embed :: EmbedClass,
