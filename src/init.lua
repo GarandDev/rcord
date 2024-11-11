@@ -2,14 +2,6 @@ local HttpService = game:GetService("HttpService")
 
 local DEBUG = false
 
-local DEFAULT_PROXY = "garand" -- the proxy it will use
-local USE_GARAND_PROXY = "https://api.rbxgarand.xyz/useThisProxy" -- if you have chosen garand proxy it will check here if it is alive
-local PROXIES = {
-	newstargeted = "https://webhook.newstargeted.com/api/webhooks/%s/%s",
-	lewisakura = "https://webhook.lewisakura.moe/api/webhooks/%s/%s",
-	garand = "https://api.rbxgarand.xyz/api/webhooks/%s/%s",
-}
-
 export type EmbedFooter = {
     text: string,
     icon_url: string?,
@@ -88,13 +80,6 @@ export type EmbedClass = {
     data: EmbedClass
 }
 
-export type ProxyClass = {
-    new: (conversionUrl: string) -> ProxyClass,
-    constructor: (self: ProxyClass, conversionUrl: string) -> nil | ProxyClass,
-    generateUrl: (self: ProxyClass, url: string) -> string,
-    conversionUrl: string,
-}
-
 export type MessageClass = {
     new: () -> MessageClass,
     constructor: (self: MessageClass) -> nil,
@@ -114,50 +99,9 @@ export type WebhookClass = {
     constructor: (self: WebhookClass, url: string) -> nil,
 	createMessage: (self: WebhookClass) -> MessageClass,
 	createEmbed: (self: WebhookClass) -> EmbedClass,
-	createCustomProxy: (self: WebhookClass, conversionUrl: string) -> ProxyClass,
-    setProxy: (self: WebhookClass, proxy: string | ProxyClass) -> nil,
     send: (self: WebhookClass, body: string | Message, wait: boolean?, thread_id: string?) -> (boolean, string),
     url: string,
-    proxy: WebhookClass,
 }
-
-local Proxy
-do
-	Proxy = setmetatable({}, {
-		__tostring = function()
-			return "Proxy"
-		end,
-	})
-	Proxy.__index = Proxy
-	function Proxy.new(...)
-		local self = setmetatable({}, Proxy)
-		return self:constructor(...) or self
-	end
-	function Proxy:constructor(conversionUrl)
-		self.conversionUrl = conversionUrl
-	end
-	function Proxy:generateUrl(url)
-		local parts = string.split(url, "/")
-		local id = parts[#parts - 1]
-		local token = parts[#parts]
-		return string.format(self.conversionUrl, id, token)
-	end
-	function Proxy:isGarandProxyAlive()
-		if DEFAULT_PROXY ~= "garand" then
-			return
-		end
-
-		local success, response = pcall(function()
-			return HttpService:JSONDecode(HttpService:GetAsync(USE_GARAND_PROXY))
-		end)
-
-		return success and (response or {})["useThisProxy"] or false
-	end
-end
-
-for k, v in PROXIES do -- allows for "config" variable to stay in top
-	PROXIES[k] = Proxy.new(v)
-end
 
 local Embed
 do
@@ -327,9 +271,6 @@ do
 	end
 end
 
-local HAS_CHECKED_LIFE_OF_GARAND_PROXY = false
-local IS_GARAND_PROXY_ALIVE = true
-
 local Webhook
 do
 	Webhook = setmetatable({}, {
@@ -344,33 +285,12 @@ do
 	end
 	function Webhook:constructor(url)
 		self.url = url
-		self:setProxy(DEFAULT_PROXY)
-	end
-	function Webhook:setProxy(proxy)
-		if typeof(proxy) ~= "string" then
-			self.proxy = proxy
-		else
-			self.proxy = PROXIES[proxy]
-		end
-
-		if proxy == "garand" and not HAS_CHECKED_LIFE_OF_GARAND_PROXY then
-			IS_GARAND_PROXY_ALIVE = self.proxy:isGarandProxyAlive()
-			HAS_CHECKED_LIFE_OF_GARAND_PROXY = true
-		end
-
-		if not IS_GARAND_PROXY_ALIVE and proxy == "garand" then
-			print("[IMPORTANT] You chose 'garand' proxy, but it is offline or out of service. Automatically choosing 'newstargeted' proxy")
-			self.proxy = PROXIES["newstargeted"]
-		end
 	end
 	function Webhook:createMessage(): MessageClass
 		return Message.new()
 	end
 	function Webhook:createEmbed(): EmbedClass
 		return Embed.new()
-	end
-	function Webhook:createCustomProxy(conversionUrl: string): ProxyClass
-		return Proxy.new(conversionUrl)
 	end
 	function Webhook:send(body, wait, thread_id)
 		wait = wait or false
@@ -379,19 +299,19 @@ do
 			body = Message.new():setContent(content)
 		end
 
-		local valid, err = body:validateMessage() -- validate message before hitting proxy
+		local valid, err = body:validateMessage() -- validate message before hitting discord
 		if not valid then
 			return false, err
 		end
 
 		if DEBUG then
 			print("Sending webhook with data ", body:toJSON())
-			print("Sending using URL ",string.format("%s?wait=%s%s", self.proxy:generateUrl(self.url), tostring(wait), thread_id and "&thread_id=" ..thread_id or ""))
+			print("Sending using URL ",string.format("%s?wait=%s%s", self.url, tostring(wait), thread_id and "&thread_id=" ..thread_id or ""))
 		end
 
 		local success, response = pcall(function()
 			return HttpService:PostAsync(
-				string.format("%s?wait=%s%s", self.proxy:generateUrl(self.url), tostring(wait), thread_id and "&thread_id=" ..thread_id or ""),
+				string.format("%s?wait=%s%s", self.url, tostring(wait), thread_id and "&thread_id=" ..thread_id or ""),
 				HttpService:JSONEncode(body:toJSON()),
 				Enum.HttpContentType.ApplicationJson,
 				false
@@ -410,5 +330,4 @@ return {
     Embed = Embed :: EmbedClass,
     Webhook = Webhook :: WebhookClass,
     Message = Message :: MessageClass,
-	Proxy = Proxy :: ProxyClass,
 }
