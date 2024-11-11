@@ -1,5 +1,5 @@
 ## rCord
-### createWebhook(url: string): WebhookClass
+### createWebhook(url: string | Secret): WebhookClass
 ```lua
 -- Creates a webhook object and returns it to you. 
 rCord.createWebhook("https://discord.com/api/webhooks/.../...") 
@@ -20,10 +20,18 @@ webhook:createMessage()
 webhook:createEmbed() 
 ```
 
-### send(body: string | MessageClass, wait: boolean?, thread_id: string?): (boolean, string)
+### send(body: string | MessageClass, wait: boolean?, thread_id: string?): (boolean, ResponseData)
 ```lua
 -- Sends a message, can either be a string key or a MessageClass.
 local success, response = webhook:send("Hello, world!")
+```
+
+## ResponseData
+```lua
+	success: boolean,
+	statusCode: number,
+	statusMessage: string,
+	body: string?
 ```
 
 ---
