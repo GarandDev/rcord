@@ -1,4 +1,4 @@
-name: Release, Publish to Wally, and Update Roblox Module Script
+name: Publish to Wally and Update Roblox Module Script
 
 on:
   workflow_dispatch:  # Allows manual triggering from GitHub
@@ -13,14 +13,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Create GitHub Release
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: v${{ steps.bump_version.outputs.NEW_VERSION }}
-        body: "Automatic release by GitHub Actions."
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Publish to Wally
       run: |
