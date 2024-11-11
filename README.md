@@ -24,7 +24,7 @@ local rCord = require(script.Parent.rCord) -- Adjust this path as needed
 
 ### 2. Initialize Your Webhook
 ```lua
-local webhook = rCord.Webhook.new("https://discord.com/api/webhooks/.../...") -- Replace with your webhook URL
+local webhook = rCord.createWebhook("https://discord.com/api/webhooks/.../...") -- Replace with your webhook URL
 ```
 
 ### 3. Send a Generic Message
@@ -37,7 +37,7 @@ webhook:send(webhook:createMessage():setContent("Hello"))
 ```lua
 local message = webhook:createMessage()
 message:addEmbed(
-   message:createEmbed():setTitle("Wow! Embed"):setDescription("Wow, this is real")
+   webhook:createEmbed():setTitle("Wow! Embed"):setDescription("Wow, this is real")
 )
 webhook:send(message)
 ```
