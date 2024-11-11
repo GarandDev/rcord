@@ -92,7 +92,7 @@ export type ProxyClass = {
 export type MessageClass = {
     new: () -> MessageClass,
     constructor: (self: MessageClass) -> nil,
-    toJSON: (self: MessageClass) -> { [string]: any },
+    toJSON: (self: MessageClass) -> MessageType,
     setContent: (self: MessageClass, content: string) -> MessageClass,
     setUsername: (self: MessageClass, username: string) -> MessageClass,
     setAvatarUrl: (self: MessageClass, avatarUrl: string) -> MessageClass,
