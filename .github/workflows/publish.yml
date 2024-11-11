@@ -14,17 +14,23 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Publish to Wally
-      run: |
-        wally publish
-      env:
-        WALLY_API_KEY: ${{ secrets.WALLY_API_KEY }}}
+    - name: Aftman install
+      uses: ok-nick/setup-aftman@v0.4.2
+
+    - name: Wally login
+      run: wally login --token ${{ secrets.WALLY_API_KEY }}
+
+    - name: Publish rCord
+      run: wally publish
+
+    - name: Wally logout
+      run: wally logout
 
     - name: Update Roblox Module Script
       run: |
         curl -X POST "https://apis.roblox.com/assets/v1/assets/${{ secrets.ASSET_ID }}" \
         -H "x-api-key: ${{ secrets.ROBLOX_API_KEY }}" \
-        -F "file=@./path/to/your/ModuleScript.lua" \
+        -F "file=@./src/init.lua" \
         -F "type=Script"
       env:
         ROBLOX_API_KEY: ${{ secrets.ROBLOX_API_KEY }}
