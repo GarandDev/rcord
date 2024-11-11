@@ -1,6 +1,6 @@
 # rCord
 
-**rCord** is a Discord webhook wrapper for Roblox, offering easy setup, complete type support, practical examples, and built-in proxy support.
+**rCord** is a small compact Discord webhook wrapper for Roblox, offering easy setup, complete type support, practical examples, and built-in proxy support.
 
 [![Latest Release](https://img.shields.io/github/v/release/GarandDev/rcord)](https://github.com/GarandDev/rcord/releases/latest)
 [![Contributors](https://img.shields.io/github/contributors/GarandDev/rcord)](https://github.com/GarandDev/rcord/graphs/contributors)
@@ -18,7 +18,7 @@
 2. **Insert into your Roblox workspace**: Place the downloaded file into your Rojo project directory, or copy its contents and import them as a ModuleScript in Roblox Studio.
 
 ## Documentation
-View the docs markdown at [this link](https://github.com/GarandDev/rcord/blob/main/DOCS.md)
+View the docs markdown at [this link](https://github.com/GarandDev/rcord/blob/main/DOCS.md) (may have few mistakes as most of it was automated)
 
 ## Usage
 
