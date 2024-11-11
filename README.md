@@ -13,10 +13,11 @@
 * **Types**: Enjoy comprehensive type checking in rCord, with every class and function available for autocompletion in your IDE.
 
 ## Installation
-Using normal Roblox
+### Using Roblox or Rojo
 1. **Download the latest release**: Click the "Latest Release" badge above to navigate to the release page and download the latest version.
 2. **Insert into your Roblox workspace**: Place the downloaded file into your Rojo project directory, or copy its contents and import them as a ModuleScript in Roblox Studio.
-Using Wally
+
+### Using Wally
 1. **Download Wally**: Follow this tutorial: https://devforum.roblox.com/t/how-to-install-wally/1757494
 2. **Add rCord to dependency**: Copy the code from [this](https://wally.run/package/garanddev/rcord) site under "Metadata". And put that in your dependencies.
 
