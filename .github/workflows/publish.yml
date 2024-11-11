@@ -41,7 +41,7 @@ jobs:
             "assetId": "${{ secrets.ASSET_ID }}",
             "name": "rCord"
           }' \
-          --form 'fileContent=@src/init.lua;filename=rCord.lua'
+          --form 'fileContent=@src/init.lua;type=text/plain;filename=rCord.lua'
       env:
         ROBLOX_API_KEY: ${{ secrets.ROBLOX_API_KEY }}
         ASSET_ID: ${{ secrets.ASSET_ID }}
