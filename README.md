@@ -1,4 +1,5 @@
 # rCord
+![rCordBanner](https://github.com/user-attachments/assets/9c08ca73-b9fe-4d2b-b0ec-43ee66211a07)
 
 **rCord** is a small compact Discord webhook wrapper for Roblox, offering easy setup, complete type support, practical examples, and built-in proxy support.
 
