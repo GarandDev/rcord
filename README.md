@@ -1,6 +1,6 @@
 # rCord
 
-rCord is a Discord webhook wrapper for Roblox. It provides a easy setup, full type support, examples, and inbuilt proxy support.
+**rCord** is a Discord webhook wrapper for Roblox, offering easy setup, complete type support, practical examples, and built-in proxy support.
 
 [![Latest Release](https://img.shields.io/github/v/release/GarandDev/rcord)](https://github.com/GarandDev/rcord/releases/latest)
 [![Contributors](https://img.shields.io/github/contributors/GarandDev/rcord)](https://github.com/GarandDev/rcord/graphs/contributors)
@@ -9,34 +9,35 @@ rCord is a Discord webhook wrapper for Roblox. It provides a easy setup, full ty
 
 ## Installation
 
-1. **Download the latest release**: Press on the "latest release" button above me, and download the file.
-2. **Insertion into your Roblox workspace**: Either plop this file into your Rojo directory, or copy the contents of it and import it into Roblox as a module script.
+1. **Download the latest release**: Click the "Latest Release" badge above to navigate to the release page and download the latest version.
+2. **Insert into your Roblox workspace**: Place the downloaded file into your Rojo project directory, or copy its contents and import them as a ModuleScript in Roblox Studio.
 
-### Usage
-1. **Import rCord**
-   ```lua
-  local rCord = require(script.Parent.rCord) -- replace this with your path to rCord
-   ```
+## Usage
 
-2. **Initiliaze your webhook**
-   ```lua
-  local webhook = rCord.Webhook.new("https://discord.com/api/webhooks/.../...") -- replace this with your webhook url
-   ```
+### 1. Import rCord
+```lua
+local rCord = require(script.Parent.rCord) -- Adjust this path as needed
+```
 
-3. **Send a generic message**
-   ```lua
-   webhook:send("Hello")
-   webhook:send(rCord.Message.new():setContent("Hello"))
-   ```
+### 2. Initialize Your Webhook
+```lua
+local webhook = rCord.Webhook.new("https://discord.com/api/webhooks/.../...") -- Replace with your webhook URL
+```
 
-4. **Send an embed**
-   ```lua
-   local message = rCord.Message.new()
-   message:addEmbed(
-      message:createEmbed():setTitle("Wow! Embed"):setDescription("Wow, this is real")
-   )
-   webhook:send(message)
-   ```
+### 3. Send a Generic Message
+```lua
+webhook:send("Hello")
+webhook:send(rCord.Message.new():setContent("Hello"))
+```
 
-### Examples
-Look into the examples folder :)
+### 4. Send an Embed
+```lua
+local message = rCord.Message.new()
+message:addEmbed(
+   message:createEmbed():setTitle("Wow! Embed"):setDescription("Wow, this is real")
+)
+webhook:send(message)
+```
+
+## Examples
+For additional usage examples, refer to the `examples` folder.
