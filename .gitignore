@@ -1,2 +1,7 @@
 /ts
 TODO
+src/testing.server.lua
+src/testing.lua
+aftman.toml
+src/testers
+sourcemap.json

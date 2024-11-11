@@ -1,6 +1,7 @@
 local HttpService = game:GetService("HttpService")
 
 local DEFAULT_PROXY = "newstargeted"
+local DEBUG = false
 local PROXIES = {
 	newstargeted = "https://webhook.newstargeted.com/api/webhooks/%s/%s",
 	lewisakura = "https://webhook.lewisakura.moe/api/webhooks/%s/%s",
@@ -8,61 +9,61 @@ local PROXIES = {
 
 export type EmbedFooter = {
     text: string,
-    icon_url: string | nil,
-    proxy_icon_url: string | nil,
+    icon_url: string?,
+    proxy_icon_url: string?,
 }
 
 export type EmbedField = {
     name: string,
     value: string,
-    inline: boolean | nil,
+    inline: boolean?,
 }
 
 export type EmbedImage = {
     url: string,
-    height: number | nil,
-    width: number | nil,
+    height: number?,
+    width: number?,
 }
 
 export type EmbedThumbnail = {
     url: string,
-    height: number | nil,
-    width: number | nil,
+    height: number?,
+    width: number?,
 }
 
 export type EmbedProvider = {
     name: string,
-    url: string | nil,
+    url: string?,
 }
 
 export type EmbedAuthor = {
     name: string,
-    url: string | nil,
-    icon_url: string | nil,
+    url: string?,
+    icon_url: string?,
 }
 
 export type EmbedType = {
-    title: string | nil,
-    type: string | nil,
-    description: string | nil,
-    url: string | nil,
-    timestamp: string | nil,
-    color: number | nil,
-    footer: EmbedFooter | nil,
-    image: EmbedImage | nil,
-    thumbnail: EmbedThumbnail | nil,
-    provider: EmbedProvider | nil,
-    author: EmbedAuthor | nil,
-    fields: {EmbedField} | nil,
+    title: string?,
+    type: string?,
+    description: string?,
+    url: string?,
+    timestamp: string?,
+    color: number?,
+    footer: EmbedFooter?,
+    image: EmbedImage?,
+    thumbnail: EmbedThumbnail?,
+    provider: EmbedProvider?,
+    author: EmbedAuthor?,
+    fields: {EmbedField}?,
 }
 
 export type MessageType = {
-    content: string | nil,
-    username: string | nil,
-    avatar_url: string | nil,
-    tts: boolean | nil,
-    embeds: { EmbedClass | EmbedType } | nil,
-	thread_name: string | nil
+    content: string?,
+    username: string?,
+    avatar_url: string?,
+    tts: boolean?,
+    embeds: { EmbedClass | EmbedType }?,
+	thread_name: string?
 }
 
 export type EmbedClass = {
@@ -101,7 +102,7 @@ export type MessageClass = {
     setTTS: (self: MessageClass, tts: boolean) -> MessageClass,
 	setThreadName: (self: MessageClass, name: string) -> MessageClass,
     addEmbed: (self: MessageClass, embed: EmbedClass) -> MessageClass,
-	validateMessage: (self: MessageClass) -> (boolean, string | nil),
+	validateMessage: (self: MessageClass) -> (boolean, string?),
     data: MessageType,
 }
 
@@ -112,7 +113,7 @@ export type WebhookClass = {
 	createEmbed: (self: WebhookClass) -> EmbedClass,
 	createCustomProxy: (self: WebhookClass, conversionUrl: string) -> ProxyClass,
     setProxy: (self: WebhookClass, proxy: string | ProxyClass) -> nil,
-    send: (self: WebhookClass, body: string | Message, wait: boolean | nil, thread_id: number | nil) -> (boolean, string),
+    send: (self: WebhookClass, body: string | Message, wait: boolean?, thread_id: number?) -> (boolean, string),
     url: string,
     proxy: WebhookClass,
 }
@@ -216,7 +217,7 @@ do
 	function Embed:getCharacters()
 		local characters = 0
 
-		for _,v in pairs({self.data.title, self.data.description, self.data.footer.text, self.data.author.name}) do
+		for _,v in pairs({self.data.title, self.data.description, (self.data.footer or {}).text, (self.data.author or {}).name}) do
 			characters += string.len(v or "")
 		end
 
@@ -353,6 +354,11 @@ do
 
 		local valid, err = body:validateMessage() -- validate message before hitting proxy
 		assert(valid, err)
+
+		if DEBUG then
+			print("Sending webhook with data ", body:toJSON())
+			print("Sending using URL ",string.format("%s?wait=%s%s", self.proxy:generateUrl(self.url), tostring(wait), thread_id and "&thread_id=" ..thread_id or ""))
+		end
 
 		local success, response = pcall(function()
 			return HttpService:PostAsync(
