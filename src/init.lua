@@ -135,7 +135,7 @@ do
 	end
 end
 
-for k, v in PROXIES do
+for k, v in PROXIES do -- allows for "config" variable to stay in top
 	PROXIES[k] = Proxy.new(v)
 end
 
