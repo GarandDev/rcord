@@ -148,9 +148,3 @@ webhook:setProxy("newstargeted")
 local success, response = webhook:send("Hello, world!")
 ```
 **Description**: Sends a message or a string as the body of the webhook.
-
-#### send(body: string | MessageClass)
-```lua
-webhook:send("Simple message")
-```
-**Description**: Sends a message either in a string or a message class.
