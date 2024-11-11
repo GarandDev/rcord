@@ -358,7 +358,7 @@ do
 			HAS_CHECKED_LIFE_OF_GARAND_PROXY = true
 		end
 
-		if not IS_GARAND_PROXY_ALIVE then
+		if not IS_GARAND_PROXY_ALIVE and proxy == "garand" then
 			print("[IMPORTANT] You chose 'garand' proxy, but it is offline or out of service. Automatically choosing 'newstargeted' proxy")
 			self.proxy = PROXIES["newstargeted"]
 		end
