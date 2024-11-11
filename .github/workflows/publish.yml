@@ -1,4 +1,4 @@
-name: Release, Publish to Wally, Update DevForum, and Update Roblox Module Script
+name: Release, Publish to Wally, and Update Roblox Module Script
 
 on:
   workflow_dispatch:  # Allows manual triggering from GitHub
@@ -14,23 +14,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16'
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Bump version
-      run: |
-        npm version patch  # or 'minor' or 'major'
-        git commit -am "Bump version"
-        git push origin main
-
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
+        tag_name: v${{ steps.bump_version.outputs.NEW_VERSION }}
         body: "Automatic release by GitHub Actions."
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -39,25 +26,14 @@ jobs:
       run: |
         wally publish
       env:
-        WALLY_API_KEY: ${{ secrets.WALLY_API_KEY }}
-
-    - name: Update DevForum Post Title
-      run: |
-        curl -X PUT "https://devforum.roblox.com/t/${{ secrets.DEVFORUM_TOPIC_ID }}.json" \
-        -H "Api-Key: ${{ secrets.DEVFORUM_API_KEY }}" \
-        -H "Api-Username: ${{ secrets.DEVFORUM_USERNAME }}" \
-        -d "title=New Title v$(npm pkg get version | tr -d '\"')"
-      env:
-        DEVFORUM_API_KEY: ${{ secrets.DEVFORUM_API_KEY }}
-        DEVFORUM_USERNAME: ${{ secrets.DEVFORUM_USERNAME }}
-        DEVFORUM_TOPIC_ID: ${{ secrets.DEVFORUM_TOPIC_ID }}
+        WALLY_API_KEY: ${{ secrets.WALLY_API_KEY }}}
 
     - name: Update Roblox Module Script
       run: |
         curl -X POST "https://apis.roblox.com/assets/v1/assets/${{ secrets.ASSET_ID }}" \
         -H "x-api-key: ${{ secrets.ROBLOX_API_KEY }}" \
-        -F "file=@./src/init.lua" \
-        -F "type=Script"  # This is for a module script
+        -F "file=@./path/to/your/ModuleScript.lua" \
+        -F "type=Script"
       env:
         ROBLOX_API_KEY: ${{ secrets.ROBLOX_API_KEY }}
         ASSET_ID: ${{ secrets.ASSET_ID }}
