@@ -37,11 +37,11 @@ jobs:
       run: |
         curl --location --request PATCH 'https://apis.roblox.com/assets/v1/assets/${{ secrets.ASSET_ID }}' \
           --header 'x-api-key: ${{ secrets.ROBLOX_API_KEY }}' \
-          --form 'request="{
-            \"assetId\": ${{ secrets.ASSET_ID }},
-            \"name\": \"rCord\"  # Set the name of the module to rCord
-          }"' \
-          --form 'fileContent=@src/init.lua;filename=rCord.lua'  # Upload src/init.lua and rename it to rCord.lua during the upload
+          --form 'request={
+            "assetId": "${{ secrets.ASSET_ID }}",
+            "name": "rCord"
+          }' \
+          --form 'fileContent=@src/init.lua;filename=rCord.lua'
       env:
         ROBLOX_API_KEY: ${{ secrets.ROBLOX_API_KEY }}
         ASSET_ID: ${{ secrets.ASSET_ID }}
