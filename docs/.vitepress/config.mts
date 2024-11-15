@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "rCord",
   description: "The official documentation page for rCord",
-  base: "/rcord/",
+  base: "/",
   themeConfig: {
     logo: '/assets/logo.png',
     nav: [
