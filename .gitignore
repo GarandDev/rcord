@@ -7,3 +7,4 @@ sourcemap.json
 TODO
 
 docs/.vitepress/cache
+docs/node_modules
