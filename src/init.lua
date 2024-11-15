@@ -3,13 +3,14 @@
 
 local HttpService = game:GetService("HttpService")
 
-local DEBUG = true
+local DEBUG = false
 
 export type ResponseData = {
 	success: boolean,
 	statusCode: number,
 	statusMessage: string,
-	body: string?
+	body: string?,
+	error: string?
 }
 
 export type EmbedFooter = {
@@ -319,7 +320,9 @@ do
 
 		local valid, err = body:validateMessage() -- validate message before hitting discord
 		if not valid then
-			return false, err
+			return false, {
+				error = err
+			}
 		end
 	
 		local url = self:convertToUrl(thread_id, wait)
@@ -344,7 +347,8 @@ do
 			success = data.Success,
 			statusCode = data.StatusCode,
 			statusMessage = data.StatusMessage,
-			body = data.Body
+			body = data.Body,
+			error = if not success then "an error occurred while sending to discord, find the error in the response data" else nil
 		} :: ResponseData
 	end
 end

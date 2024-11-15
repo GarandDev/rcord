@@ -1,0 +1,15 @@
+{
+    "name": "rcord",
+    "tree": {
+      "$className": "DataModel",
+  
+      "ServerScriptService": {
+        "rCord": {
+          "$path": "src"        
+        },
+        "testing": {
+            "$path": "tests"        
+        }
+      }
+    }
+  }

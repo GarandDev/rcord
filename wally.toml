@@ -1,9 +1,32 @@
 [package]
 name = "garanddev/rcord"
 description = "Read more at https://github.com/GarandDev/rcord"
-version = "1.0.0"
+version = "1.2.5"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "server"
-exclude = [".git", ".github", "examples", "ts", ".gitignore", "aftman.toml", "DOCS.md", "README.md", "sourcemap.json", "TODO"]
+exclude = [
+    ".git",
+    ".github",
+
+    "assets",
+    "examples",
+    "scripts",
+    "tests",
+
+    ".gitignore",
+    "aftman.toml",
+
+    "dev.default.project.json",
+
+    "DOCS.md",
+    "README.md",
+
+    "docs",
+
+    "sourcemap.json",
+    "TODO",
+    "VERSION"
+]
 
 [dependencies]
+rcord = "garanddev/rcord@1.2.0"
