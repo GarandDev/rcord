@@ -22,9 +22,9 @@ Instead of `CTRL + A` use `COMMAND + A`, etc
 ::: details Wally
 - Go onto [our wally page](https://wally.run/package/garanddev/rcord)
 - Click on the string under the `Install` text
-![alt text](/assets/tutorials/wallyCode.png)
+![alt text](/public/tutorials/wallyCode.png)
 - Place the code in your Wally dependencies
-![alt text](/assets/tutorials/wallyDependecy.png)
+![alt text](/public/tutorials/wallyDependecy.png)
 
 > [!WARNING]
 > This guide expects you to already have Wally setup. If not use [this guide](https://devforum.roblox.com/t/how-to-install-wally/1757494)

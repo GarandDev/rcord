@@ -6,7 +6,7 @@ hero:
   name: "rCord"
   tagline: "A lightweight, compact and fast webhook wrapper for Roblox"
   image:
-    src: /assets/logo.png
+    src: /logo.png
     alt: rCord
   actions:
     - theme: brand

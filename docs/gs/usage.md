@@ -19,7 +19,7 @@ This will send a generic message to your webhook.
 ```lua
 webhook:send("Hello")
 ```
-![alt text](/assets/preview/sendingMessage.png)
+![alt text](/public/preview/sendingMessage.png)
 
 ## Sending an Embed
 This will send a compact embed to your webhook.
@@ -31,4 +31,4 @@ message:addEmbed(
 
 webhook:send(message)
 ```
-![alt text](/assets/preview/sendingEmbed.png)
+![alt text](/public/preview/sendingEmbed.png)

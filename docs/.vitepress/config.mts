@@ -4,8 +4,10 @@ export default defineConfig({
   title: "rCord",
   description: "The official documentation page for rCord",
   base: "/",
+  appearance: "dark",
+  head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
   themeConfig: {
-    logo: '/assets/logo.png',
+    logo: '/logo.png',
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Getting Started', link: '/gs/introduction' },
