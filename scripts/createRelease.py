@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
     if checkUncomittedChanges():
         proceed = input("[rCord] You have uncommited changes, will you still proceed (Y, N)? ")
-        if proceed.lower() == "N":
+        if proceed.lower() == "n":
             exit()
     
     changeVersion.changeWallyVersion(version)

@@ -14,13 +14,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-
-    - name: Update version in wally.toml
-      run: |
-        VERSION=$(cat VERSION)
-        echo "Updating wally.toml to version $VERSION"
-        sed -i "s/^version = \".*\"/version = \"$VERSION\"/" wally.toml
-
     - name: Aftman install
       uses: ok-nick/setup-aftman@v0.4.2
 

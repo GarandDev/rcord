@@ -28,8 +28,13 @@ def isVersionLowerThanCurrent(version):
 def changeVersionPrompt():
     current_version = getCurrentVersion()
     version = input("[rCord]: What version do you want to release this under (current: " + current_version + ")? ")
-    assert not isVersionLowerThanCurrent(version), (
-        "Tried to release " + version + " but it is below current version " + current_version
+    if isVersionLowerThanCurrent(version):
+        proceed = input("[rCord] Tried version is lower than the old one, are you sure you want to proceed (Y, N)? ")
+        if proceed.lower() == "n":
+            exit()
+    
+    assert len(parseVersion(version)) > 2, (
+        "You need to have 3 numbers, for eaxmple: 3.0.0"
     )
     
     return version

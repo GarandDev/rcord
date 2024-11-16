@@ -150,10 +150,7 @@ do
 		return self
 	end
 	function Embed:setColor(color)
-		if typeof(color) == "Color3" then
-			color = tonumber(color:ToHex(), 16)
-		end
-		self.data.color = color
+		self.data.color = typeof(color) == "Color3" and tonumber(color:ToHex(), 16) or color
 		return self
 	end
 	function Embed:setFooter(body)
